@@ -1,1 +1,11 @@
-changed by main
+import { test, expect } from '@playwright/test'
+
+test('test', async ({ page }) => {
+    await page.goto('https://demowebshop.tricentis.com/login');
+    await page.locator('#Email').fill('adminuser@hooli.com')
+    await page.locator('#Password').fill('adminuse');
+    page.locator('.login-button').click()
+        .then(resolved => expect(page.getByRole('link', { name: 'Log out' })).toBeVisible())
+        .catch(rejected => console.log(rejected))
+
+    })
