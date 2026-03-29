@@ -1,1 +1,36 @@
-updated in the login scenario branch
+import { test, expect, request } from '@playwright/test'
+import { json } from 'node:stream/consumers';
+
+
+test('testing the web elements', async ({ page }) => {
+    await page.goto('https://www.google.com/');
+    await page.locator('textarea.gLFyf').first().pressSequentially('test', { delay: 250 });
+    const item = page.locator('textarea.gLFyf').first()
+    await expect(item).toHaveValue(/test/)
+    expect(await page.locator('.UUbT9.EyBRub ul li').count()).toEqual(10)
+    const textContent = await page.locator('.UUbT9.EyBRub ul li').allInnerTexts()
+    console.log(textContent)
+    await page.locator('').waitFor({ state: 'visible' })
+
+
+})
+
+
+test('user check', async ({ request, page }) => {
+    const req = await request.post('https://example.com/createuser', { data: { name: 'snow', id: 101 } })
+    expect(req.status()).toEqual(201)
+    await page.goto('https://example.com');
+    const data = page.locator('table').filter({ hasText: 'snow' })
+    await expect(data).toHaveText('snow')
+    JSON.stringify
+})
+
+test('valid scenario', { tag: '@regression' }, async ({ page }) => {
+    await page.goto('https://example.com');
+    await Promise.all([
+        page.waitForResponse(req => req.url().includes('/dashboard') && req.status() === 200),
+        page.getByRole('link', { name: 'dashboard' }).click()
+    ])
+    await expect(page.locator('#dashboardDrpdown')).toBeVisible();
+
+})
